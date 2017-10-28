@@ -2,10 +2,12 @@ import sys
 from collections import defaultdict
 import bisect
 
+#opening all relevant streams
 data_stream = open("insight_testsuite/tests/test_1/input/itcont.txt", mode='r')
 zip_stream = open("output/medianvals_by_zip.txt", mode='w')
 dt_stream = open("output/medianvals_by_date.txt", mode='w')
 
+#grabs necessary data
 def parse_data(data):
     data_array = data.split('|')
     data_dict = {"cmte_id": data_array[0],
@@ -15,6 +17,7 @@ def parse_data(data):
                  "other_id" : data_array[15]}
     return data_dict
 
+#returns median; rounds up if >.5, down if <.5
 def return_median(sorted_list):
     length = len(sorted_list)
     middle = length / 2
@@ -25,6 +28,16 @@ def return_median(sorted_list):
         median = sorted_list[middle]
     return median
 
+#will get the [0]median, [1]# of transactions and [3]total monetary value
+#and return as a list
+def get_data(data_dict, cmte_id, data_type):
+    return_list = []
+    return_list.append(return_median(data_dict[cmte_id][data_type]["transactions"]))
+    return_list.append(len(data_dict[cmte_id][data_type]["transactions"]))
+    return_list.append(data_dict[cmte_id][data_type]["total_amt"][0])
+    return return_list
+
+#used to write to file. opens the appropriate stream and writes relevant data
 def write_file(stream, cmte_id, data_type, median, length, total_amt):
     stream.write(cmte_id + '|' + \
                  data_type + '|' + \
@@ -33,48 +46,80 @@ def write_file(stream, cmte_id, data_type, median, length, total_amt):
                  str(total_amt) + "\n")
     return
 
+#will get features and write file
+def write_helper(data_dict, stream, cmte_id, data_type):
+    features = get_data(data_dict, cmte_id, data_type)
+    write_file(stream, cmte_id, data_type, features[0], features[1], features[2])
+    return
+
+#The following function uses this dictionary structure:
 #   dict = {
 #           donations["cmte_id"] : { 
-#               donations[type_string] : [donations["transaction_amt"]] 
+#               donations[type_string] : {
+#                   "total_amt": [],
+#                   "transactions": [] 
 #           }
 #   }
+#this function is cool because it can be used for either by zip code or by
+#transaction date based on what's passed in type_string during the function call
 def median_val_by(donation_data, type_string, stream):
+    #generates the nested dictionary with a list at the end
     data_dict = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+
     for donation in donation_data:
         cmte_id = donation["cmte_id"]
-        data_type = donation[type_string]
         transaction_amt = donation["transaction_amt"]
+
+        #check if the value at donation[type_string] is valid
+        data_type = donation[type_string]
+        if data_type == "":
+            pass
+        elif type_string == "zip_code" and len(data_type) != 5:
+            pass
+        elif type_string == "transaction_dt" and len(data_type) != 8:
+            pass
+
+        #will check to see if anything is in the list, if not: add new entry
         if len(data_dict[cmte_id][data_type]["total_amt"]) == 0:
             data_dict[cmte_id][data_type]["total_amt"].append(transaction_amt)
         else:
             current_total = data_dict[cmte_id][data_type]["total_amt"].pop(0)
             current_total += transaction_amt
             data_dict[cmte_id][data_type]["total_amt"].append(current_total)
+
+        #using bisect library to insert data into sorted list
         bisect.insort(data_dict[cmte_id][data_type]["transactions"], transaction_amt)
-        median = return_median(data_dict[cmte_id][data_type]["transactions"])
-        length = len(data_dict[cmte_id][data_type]["transactions"])
+
+        #if it's streaming data, then write immediately
         if type_string == "zip_code":
-            total_amt = data_dict[cmte_id][data_type]["total_amt"][0]
-            write_file(stream, cmte_id, data_type, median, length, total_amt)
+            write_helper(data_dict, stream, cmte_id, data_type) 
+
+    #if by date then go through and write to file
     if type_string == "transaction_dt":
-        for key in data_dict:
-            for secondary_key in data_dict[key]:
-                total_amt = data_dict[key][secondary_key]["total_amt"][0]
-                median = \
-                return_median(data_dict[key][secondary_key]["transactions"])
-                length = len(data_dict[key][secondary_key]["transactions"])
-                write_file(stream, key, data_type, median, length, total_amt)
+        for cmte_id in data_dict:
+            for data_type in data_dict[cmte_id]:
+                write_helper(data_dict, stream, cmte_id, data_type)
+
+    #return the dictionary
     return data_dict
 
+#will store the relevant information for the input
 donation_data = []
+
+#go through the input file and run parse_data() on each line, then add to
+#donation_data list
 for data in data_stream:
     parsed_data = parse_data(data)
     if parsed_data["cmte_id"] != "" and parsed_data["transaction_amt"] != "" \
             and parsed_data["other_id"] == "":
         donation_data.append(parsed_data)
 
+#generates the median by zip streaming file
 median_val_by(donation_data, "zip_code", zip_stream)
+
+#generates the median by date dictionary
 median_val_by(donation_data, "transaction_dt", dt_stream)
 
+#close the streams
 zip_stream.close()
 dt_stream.close()
