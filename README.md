@@ -15,7 +15,7 @@ sorted chronologically.
 
 ## Implementation
 
-The script is written in Python. It begins by getting the necessary fields from
+The script is written in Python 2.7. It begins by getting the necessary fields from
 the original input file. The data is then put into a dictionary with the keys
 being `cmte_id`, `zip_code`, `transaction_dt`, `transaction_amt`, and `other_id`. 
 The script will ignore lines that have `cmte_id`, `transaction_amt` or 
