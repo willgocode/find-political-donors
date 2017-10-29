@@ -11,7 +11,7 @@ will output to the file as the data comes in. It will organize the data by zip
 code. The file `medianvals_by_date.txt` will contain the same data but filtered
 by date, contain unique values and sorted alphabetically by `cmte_id` and then 
 sorted chronologically. 
-***
+
 ## Implementation
 
 The script is written in Python. It begins by getting the necessary fields from
@@ -40,7 +40,6 @@ will check to see if the `type_string` was `transaction_dt`. In the case that
 it is, it'll go through the data obtained from the function, filter and sort 
 it, then write the results to `medianvals_by_date.txt`. Once both output files
 are written to, the files are closed.
-***
 ## Running
 
 The script runs simply through `./run.sh` found in the root directory.
@@ -48,7 +47,6 @@ Additionally, if you wish to run it without the use of the script, you may run
 the command 
     
 	python ./src/data_parse.py <input.txt> <output1.txt> <output2.txt>
-***
 ## Testing
 
 The script will pass the provided test files in `insight_testsuite`. This can be
