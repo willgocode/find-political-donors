@@ -2,7 +2,7 @@ import sys
 import medianval_by_type_function as perform
 import data_handling_functions as handle
 
-#parse input arguments
+#parse the input arguments
 if len(sys.argv) != 4:
     print("Usage: python <src.py> <input.txt> <medianvals_by_zip.txt>\
             <medianvals_by_date.txt>")
@@ -16,17 +16,18 @@ dt_stream = open(sys.argv[3], mode='w')
 donation_data = []
 
 #go through the input file and run parse_data() on each line, then add to
-#donation_data list
+#donation_data list if it's a valid entry
 for data in data_stream:
     parsed_data = handle.parse_data(data)
-    if parsed_data["cmte_id"] != "" and parsed_data["transaction_amt"] != "" \
+    if parsed_data["cmte_id"] != ""\
+            and parsed_data["transaction_amt"] != ""\
             and parsed_data["other_id"] == "":
         donation_data.append(parsed_data)
 
-#generates the median by zip streaming file
+#generates the median by zip file
 perform.median_val_by(donation_data, "zip_code", zip_stream)
 
-#generates the median by date dictionary
+#generates the median by date file
 perform.median_val_by(donation_data, "transaction_dt", dt_stream)
 
 #close the streams
