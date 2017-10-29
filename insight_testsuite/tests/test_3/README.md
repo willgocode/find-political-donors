@@ -1,1 +1,4 @@
-This test has been provided for you so that you can see one example, however, you should be creating your own tests to check that your code runs as expected.
+# About
+This input file is from the 2017-2018 Data Files found [on this site](http://classic.fec.gov/finance/disclosure/ftpdet.shtml). 
+
+It contains the lines 50,001 to 100,001 of the `Contributions by Individuals` file.
