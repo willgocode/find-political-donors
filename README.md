@@ -62,4 +62,5 @@ run by the following commands:
     ./run_tests.sh
 
 The main program itself will run via `./run.sh`. It will test the input file 
-found in the base directory and also output to the base directory.
+found in the base directory and also output to the base directory. 
+The test files include various ranges of lines of 50,000 from the FEC 2013-2014, 2015-2016 and 2017-2018 individual contributions files.
