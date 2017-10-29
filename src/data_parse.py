@@ -6,7 +6,7 @@ import bisect
 #parse input arguments
 if len(sys.argv) != 4:
     print("Usage: python <src.py> <input.txt> <medianvals_by_zip.txt>\
-        <medianvals_by_date.txt>")
+            <medianvals_by_date.txt>")
 
 #opening all relevant streams
 data_stream = open(sys.argv[1], mode='r')
