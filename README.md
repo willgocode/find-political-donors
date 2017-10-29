@@ -63,4 +63,18 @@ run by the following commands:
 
 The main program itself will run via `./run.sh`. It will test the input file 
 found in the base directory and also output to the base directory. 
-The test files include various ranges of lines of 50,000 from the FEC 2013-2014, 2015-2016 and 2017-2018 individual contributions files.
+The test files include various ranges of lines of 50,000 from the FEC 2013-2014
+, 2015-2016 and 2017-2018 individual contributions files.
+
+## Comments
+
+I wasn't quite sure what scalable meant in the sense of data engineering. I 
+designed my script to be quite modular and tried to minimize redundant code by 
+turning the redundancies into functions that can be called many times instead. 
+I also took into consideration that the team may want to reuse the code behind 
+finding `medianvals_by_zip` for later and it should be easy to call this 
+function as long as it is given the correct information.
+
+If scalable meant that it would be very efficient to distribute the script
+across multiple nodes for parralel operation, then I think my script still would
+run decently well.
