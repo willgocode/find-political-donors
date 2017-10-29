@@ -78,3 +78,10 @@ function as long as it is given the correct information.
 If scalable meant that it would be very efficient to distribute the script
 across multiple nodes for parralel operation, then I think my script still would
 run decently well.
+
+The only unit I really test is the `transaction_amt` as that's the only thing
+that really needs to be tested. The rest of the data is treated as strings so
+any sort of input would just be a string rather than a number. `transaction_amt`
+is tested first, if it's blank then we just skip it before we ever convert it to
+an integer. Since everything else can be handled perfectly fine as a string, the
+script should hold up perfectly. 
