@@ -3,7 +3,8 @@
 ## Introduction
 
 This program will get data from the Federal Election Commission about political
-donors. This information will help give insight as to what zip codes and on 
+donors using the [files found here](http://classic.fec.gov/finance/disclosure/ftpdet.shtml).
+This information will help give insight as to what zip codes and on 
 which dates the candiates receive their donations. The program will write two 
 files `medianvals_by_zip.txt` and `medianvals_by_date.txt`. The file 
 `medianvals_by_zip.txt` will treat the input data as streaming data; The script
@@ -48,7 +49,8 @@ the command
     
 	python ./src/data_parse.py <input.txt> <output1.txt> <output2.txt>
 
-Additionally you may want to uncomment the code found in `./run.sh` in order to generate the remaining test files and place them in their appropriate folders.
+You may also run `./generate_all_files.sh` in order to automatically run the
+script for all included test files in the `insight_testsuite` folder.
 ## Testing
 
 The script will pass the provided test files in `insight_testsuite`. This can be
@@ -59,4 +61,5 @@ run by the following commands:
     chmod 500 ./run_tests.sh
     ./run_tests.sh
 
-The main program itself will run via `./run.sh`. It will test the input file found in the base directory and also output to the base directory.
+The main program itself will run via `./run.sh`. It will test the input file 
+found in the base directory and also output to the base directory.
