@@ -59,7 +59,4 @@ run by the following commands:
     chmod 500 ./run_tests.sh
     ./run_tests.sh
 
-The main program itself will run via `./run.sh`. It will test the input file found in the base directory and also output to the base directory. Any other outside testing can be done directly through the command line by passing in the arguments:
-    
-    python ./src/data_parse.py <inputfile> <medianvals_by_zip.txt> <median_vals_by_zip.txt>
-The directory is set up correctly at the moment with the necessary files in their necessary places.
+The main program itself will run via `./run.sh`. It will test the input file found in the base directory and also output to the base directory.
