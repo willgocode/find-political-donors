@@ -1,1 +1,2 @@
-This is the directory where your program would find any test input files.
+# About
+This directory contains the default itcont.txt. Additional input files can be found in the insight_testsuite folder.

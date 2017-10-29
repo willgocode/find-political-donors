@@ -1,1 +1,2 @@
-This directory is where we would expect your program to write the requested output files.
+# About
+This directory contains the output files from the input in the base directory.
