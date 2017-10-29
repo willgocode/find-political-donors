@@ -1,5 +1,6 @@
 import sys
 from collections import defaultdict
+from collections import OrderedDict
 import bisect
 
 #parse input arguments
@@ -18,11 +19,11 @@ def parse_data(data):
     data_dict = {"cmte_id": data_array[0],
                  "zip_code": data_array[10][:5],
                  "transaction_dt" : data_array[13],
-                 "transaction_amt" : int(data_array[14]),
+                 "transaction_amt" : data_array[14],
                  "other_id" : data_array[15]}
     return data_dict
 
-#returns median; rounds up if >.5, down if <.5
+#returns median; rounds up if >.5, down` if <.5
 def return_median(sorted_list):
     length = len(sorted_list)
     middle = length / 2
@@ -51,7 +52,7 @@ def write_file(stream, cmte_id, data_type, median, length, total_amt):
                  str(total_amt) + "\n")
     return
 
-#will get features and write file
+#gets the features for the given cmte_id and data_type from the data_dict
 def write_helper(data_dict, stream, cmte_id, data_type):
     features = get_data(data_dict, cmte_id, data_type)
     write_file(stream, cmte_id, data_type, features[0], features[1], features[2])
@@ -70,7 +71,7 @@ def write_helper(data_dict, stream, cmte_id, data_type):
 def median_val_by(donation_data, type_string, stream):
     #generates the nested dictionary with a list at the end
     data_dict = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
-
+    tuple_list = []
     for donation in donation_data:
         cmte_id = donation["cmte_id"]
         transaction_amt = donation["transaction_amt"]
@@ -84,12 +85,13 @@ def median_val_by(donation_data, type_string, stream):
         elif type_string == "transaction_dt" and len(data_type) != 8:
             pass
 
+        tuple_list.append((cmte_id, data_type))
         #will check to see if anything is in the list, if not: add new entry
         if len(data_dict[cmte_id][data_type]["total_amt"]) == 0:
             data_dict[cmte_id][data_type]["total_amt"].append(transaction_amt)
         else:
-            current_total = data_dict[cmte_id][data_type]["total_amt"].pop(0)
-            current_total += transaction_amt
+            current_total = int(data_dict[cmte_id][data_type]["total_amt"].pop(0))
+            current_total += int(transaction_amt)
             data_dict[cmte_id][data_type]["total_amt"].append(current_total)
 
         #using bisect library to insert data into sorted list
@@ -101,10 +103,10 @@ def median_val_by(donation_data, type_string, stream):
 
     #if by date then go through and write to file
     if type_string == "transaction_dt":
-        for cmte_id in data_dict:
-            for data_type in data_dict[cmte_id]:
-                write_helper(data_dict, stream, cmte_id, data_type)
-
+        unique_list = list(set(tuple_list))
+        sorted_unique_list = sorted(unique_list, key = lambda x:(x[0], x[1]))
+        for tup in sorted_unique_list:
+            write_helper(data_dict, stream, tup[0], tup[1])
     #return the dictionary
     return data_dict
 
@@ -129,5 +131,4 @@ median_val_by(donation_data, "transaction_dt", dt_stream)
 zip_stream.close()
 dt_stream.close()
 
-#date file should be sorted alphabetically by cmte_id and then by date, also
 #unique only
