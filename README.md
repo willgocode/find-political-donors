@@ -47,6 +47,8 @@ Additionally, if you wish to run it without the use of the script, you may run
 the command 
     
 	python ./src/data_parse.py <input.txt> <output1.txt> <output2.txt>
+
+Additionally you may want to uncomment the code found in `./run.sh` in order to generate the remaining test files and place them in their appropriate folders.
 ## Testing
 
 The script will pass the provided test files in `insight_testsuite`. This can be
