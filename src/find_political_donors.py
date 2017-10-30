@@ -28,7 +28,7 @@ for data in data_stream:
 perform.median_val_by(donation_data, "zip_code", zip_stream)
 
 #generates the median by date file
-perform.median_val_by(donation_data, "transaction_dt", dt_stream)
+test_dict = perform.median_val_by(donation_data, "transaction_dt", dt_stream)
 
 #close the streams
 zip_stream.close()

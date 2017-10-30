@@ -18,7 +18,7 @@ def median_val_by(donation_data, type_string, stream):
     tuple_list = []
     for donation in donation_data:
         cmte_id = donation["cmte_id"]
-        transaction_amt = donation["transaction_amt"]
+        transaction_amt = int(donation["transaction_amt"])
 
         #check if the value at donation[type_string] is valid
         data_type = donation[type_string]
@@ -34,8 +34,8 @@ def median_val_by(donation_data, type_string, stream):
         if len(data_dict[cmte_id][data_type]["total_amt"]) == 0:
             data_dict[cmte_id][data_type]["total_amt"].append(transaction_amt)
         else:
-            current_total = int(data_dict[cmte_id][data_type]["total_amt"].pop(0))
-            current_total += int(transaction_amt)
+            current_total = data_dict[cmte_id][data_type]["total_amt"].pop(0)
+            current_total += transaction_amt
             data_dict[cmte_id][data_type]["total_amt"].append(current_total)
 
         #using bisect library to insert data into sorted list
