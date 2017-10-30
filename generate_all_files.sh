@@ -42,3 +42,9 @@ python ./src/find_political_donors.py ./insight_testsuite/tests/test_6/input/itc
                            ./insight_testsuite/tests/test_6/output/medianvals_by_zip.txt\
                            ./insight_testsuite/tests/test_6/output/medianvals_by_date.txt
 echo "test_6 complete."
+#test 7
+echo "Performing test_7."
+python ./src/find_political_donors.py ./insight_testsuite/tests/test_7/input/itcont.txt\
+                           ./insight_testsuite/tests/test_7/output/medianvals_by_zip.txt\
+                           ./insight_testsuite/tests/test_7/output/medianvals_by_date.txt
+echo "test_7 complete."
